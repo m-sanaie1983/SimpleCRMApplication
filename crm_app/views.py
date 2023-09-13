@@ -4,13 +4,17 @@ from django.urls import reverse
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate
 from .forms import SignupForm, LoginForm
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
+from . import roles
+from .decorators import admin_required, member_required
 
 
 def index_view(request):
+    roles.create_groups()
     return render(request, 'index.html')
 
 
+@member_required
 def dashboard_view(request):
     return render(request, 'dashboard.html')
 
@@ -23,8 +27,10 @@ def signup_view(request):
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
             user = User.objects.create_user(username=username, email=email, password=password)
+            member_group = Group.objects.filter(name='Members').first()
+            user.groups.add(member_group.id)
             login(request, user)
-            return redirect('crm:dashboard')  # Replace 'home' with the URL to redirect after signup
+            return redirect('crm:dashboard')
     else:
         form = SignupForm()
     return render(request, 'signup.html', {'form': form})
