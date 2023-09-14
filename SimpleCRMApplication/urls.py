@@ -16,14 +16,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from crm_app import views
+from crm_app.Views import general_views
 from django.contrib.auth.views import LogoutView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('signup', views.signup_view, name='signup'),
-    path('login', views.login_view, name='login'),
+    path('signup', general_views.signup_view, name='signup'),
+    path('login', general_views.login_view, name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
-    path('', views.index_view, name='index'),
+    path('', general_views.index_view, name='index'),
     path('crm/', include('crm_app.urls')),
 ]

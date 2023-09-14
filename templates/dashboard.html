@@ -1,15 +1,38 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container mt-5">
-    <div class="row">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-body">
-                    <h2 class="card-title">Dashboard</h2>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-12">
+                <span class="navbar-brand">CRM Dashboard</span>
+                <div class="container mt-4">
+                    <h1>Your Deals</h1>
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Title</th>
+                            <th>Client</th>
+                            <th>Amount</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for deal in deals %}
+                            <tr>
+                                <td>{{ deal.id }}</td>
+                                <td>{{ deal.title }}</td>
+                                <td>{{ deal.client }}</td>
+                                <td>{{ deal.amount }}</td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="4">No deals available.</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
-</div>
 {% endblock %}

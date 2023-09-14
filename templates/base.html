@@ -5,16 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CRM Project</title>
-    <!-- Add Bootstrap CSS link here -->
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-    <!-- Add your custom CSS if needed -->
     <style>
         /* Add your custom styles here */
         .banner {
             background-color: #0b5ed7;
             background-size: cover;
             background-position: center;
-            height: 30vh;
+            height: 40vh;
             color: #fff;
             text-align: center;
             display: flex;
@@ -47,11 +45,38 @@
 <body>
 
 <div class="container-fluid">
-    <!-- Banner Section -->
-    <div class="banner">
-        <h1>Welcome to Our CRM Website</h1>
-        <p>Your business's success starts here.</p>
-        <a href="{% url 'logout' %}" class="btn btn-danger btn-lg active" role="button" aria-pressed="true">Logout</a>
+    <div class="container">
+        <div class="row">
+            <div class="banner">
+                <h1>Welcome to Our CRM Website</h1>
+                <p>Your business's success starts here.</p>
+                <div class="text-right">
+                    <div class="row">
+                        {% if user is True %}
+                            <a href="{% url 'logout' %}" class="btn btn-warning btn-lg active" role="button"
+                               aria-pressed="true">Logout</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <nav class="navbar navbar-expand-lg navbar-light bg-warning">
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'crm:dashboard' %}">Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'crm:customers' %}">Customers</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+
     </div>
 </div>
 
