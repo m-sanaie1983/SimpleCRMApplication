@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container mt-5">
+        <div class="row">
+            <form method="post" class="my-4">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="{{ customer_form.name.id }}" class="form-label">{{ customer_form.name.label }}</label>
+                    {{ customer_form.name }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ customer_form.email.id }}" class="form-label">{{ customer_form.email.label }}</label>
+                    {{ customer_form.email }}
+                </div>
+
+                <table id="phone_numbers" class="table table-bordered">
+                    {{ phone_number_formset.management_form }}
+                    {% for form in phone_number_formset %}
+                        {{ form.as_table }}
+                    {% endfor %}
+                </table>
+
+                <button type="button" id="add_phone" class="btn btn-primary">Add Phone Number</button>
+                <input type="submit" value="Save" class="btn btn-success">
+            </form>
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    const addButton = document.getElementById('add_phone');
+                    const phoneNumbersTable = document.getElementById('phone_numbers');
+
+                    addButton.addEventListener('click', function () {
+                        const formCount = parseInt(document.getElementById('id_form-TOTAL_FORMS').value);
+                        const newForm = document.createElement('tr');
+                        newForm.innerHTML = `{{ phone_number_formset.empty_form.as_table|safe }}`.replace(/__prefix__/g, formCount);
+                        phoneNumbersTable.appendChild(newForm);
+                        document.getElementById('id_form-TOTAL_FORMS').value = formCount + 1;
+                    });
+                });
+            </script>
+        </div>
+        <div class="row">
+            <div class="container mt-4">
+                <h2>Customer List</h2>
+
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone Numbers</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for customer in customers %}
+                        <tr>
+                            <td><a href="{% url 'crm:edit_customer' customer.id %}">{{ customer.name }}</a></td>
+                            <td>{{ customer.email }}</td>
+                            <td>
+                                <ul>
+                                    {% for phone_number in customer.phone_numbers.all %}
+                                        <li>{{ phone_number.phone_number }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </td>
+                            <td><a href="{% url 'crm:delete_customer' customer.id %}" class="btn btn-primary">Delete</a></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

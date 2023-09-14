@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="row">
+        <div class="container mt-4">
+            <h2>Edit Customer</h2>
+
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="{{ customer_form.name.id }}" class="form-label">Name</label>
+                    <input type="text" name="{{ customer_form.name.name }}" id="{{ customer_form.name.id }}"
+                           class="form-control" value="{{ customer_form.name.value }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="{{ customer_form.email.id }}" class="form-label">Email</label>
+                    <input type="email" name="{{ customer_form.email.name }}" id="{{ customer_form.email.id }}"
+                           class="form-control" value="{{ customer_form.email.value }}" required>
+                </div>
+
+                <h4>Edit Phone Numbers</h4>
+                <div id="phone_numbers">
+                    {% for phone_number_form in phone_number_formset %}
+                        {% if not forloop.last %}
+                            <div class="form-row mb-3">
+                                <div class="col-10">
+                                    <input type="text" name="{{ phone_number_form.phone_number.name }}"
+                                           class="form-control" value="{{ phone_number_form.phone_number.value }}"
+                                           required>
+                                </div>
+                                <div class="col-2">
+                                    <button type="button" class="btn btn-danger delete-phone">Delete</button>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+
+                <button type="button" id="add_phone" class="btn btn-primary">Add Phone Number</button>
+                <input type="submit" value="Save" class="btn btn-success">
+            </form>
+        </div>
+    </div>
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function () {
+            const addButton = document.getElementById('add_phone');
+            const phoneNumbersContainer = document.querySelector('#phone_numbers');
+
+            addButton.addEventListener('click', function () {
+                const formCount = phoneNumbersContainer.querySelectorAll('.form-row').length;
+                const newForm = document.createElement('div');
+                newForm.classList.add('form-row', 'mb-3');
+                newForm.innerHTML = `
+                    <div class="col-10">
+                        <input type="text" name="phone_numbers-${formCount}-phone_number"
+                               class="form-control" required>
+                    </div>
+                    <div class="col-2">
+                        <button type="button" class="btn btn-danger delete-phone">Delete</button>
+                    </div>
+                `;
+                phoneNumbersContainer.appendChild(newForm);
+            });
+
+            phoneNumbersContainer.addEventListener('click', function (e) {
+                if (e.target.classList.contains('delete-phone')) {
+                    const formRow = e.target.closest('.form-row');
+                    if (formRow) {
+                        formRow.remove();
+                    }
+                }
+            });
+        });
+    </script>
+{% endblock %}
