@@ -12,9 +12,11 @@ from crm_app.forms import DealForm, TaskForm
 def tasks_view(request):
     context = dict()
     request_user = request.user
+    # I put user false or true in context to show logout button enable if user loged in
     user = False
     if request.user:
         user = True
+    # create an instance of Task form from request or create new
     form = TaskForm(request.POST or None)
     if request.method == 'GET':
         form.fields['customer'].queryset = Customer.objects.filter(user=request_user).all()

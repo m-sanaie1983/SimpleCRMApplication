@@ -20,11 +20,13 @@ def index_view(request):
 @login_required
 def dashboard_view(request):
     context = dict()
+    # I put user false or true in context to show logout button enable if user loged in
     user = False
     request_user = request.user
     if request_user:
         user = True
 
+    # get data counts for dashboard
     deals = Deal.objects.filter(customer__user=request_user).all().count()
     tasks = Task.objects.filter(Q(customer__user=request_user) | Q(deal__customer__user=request_user)).all().count()
     customers = Customer.objects.filter(user=request_user).all().count()
