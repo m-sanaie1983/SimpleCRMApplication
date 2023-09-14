@@ -3,7 +3,7 @@
 {% block content %}
     <div class="row">
         <div class="container mt-4">
-            <h2>{{ customer.name }} - Deals</h2>
+            <h2>Add Deals</h2>
             <form method="post">
                 {% csrf_token %}
                 {{ form.as_p }}

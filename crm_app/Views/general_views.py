@@ -7,6 +7,9 @@ from crm_app.forms import SignupForm, LoginForm
 from django.contrib.auth.models import User, Group
 from crm_app import roles
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
+
+from crm_app.models import Deal, Customer, Task
 
 
 def index_view(request):
@@ -16,10 +19,20 @@ def index_view(request):
 
 @login_required
 def dashboard_view(request):
-    context = {'user': False}
-    user = request.user
-    if user:
-        context = {'user': True}
+    context = dict()
+    user = False
+    request_user = request.user
+    if request_user:
+        user = True
+
+    deals = Deal.objects.filter(customer__user=request_user).all().count()
+    tasks = Task.objects.filter(Q(customer__user=request_user) | Q(deal__customer__user=request_user)).all().count()
+    customers = Customer.objects.filter(user=request_user).all().count()
+    context['user'] = user
+    context['deals'] = deals
+    context['tasks'] = tasks
+    context['customers'] = customers
+
     return render(request, 'dashboard.html', context)
 
 
