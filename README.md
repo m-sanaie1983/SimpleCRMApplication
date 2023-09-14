@@ -59,5 +59,3 @@ http://ip-address/
 - Docker
 - PostgreSQL
 - nginx
-
-- ## Contact
