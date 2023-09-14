@@ -50,7 +50,7 @@ PhoneNumberFormSet = modelformset_factory(
 class DealForm(forms.ModelForm):
     class Meta:
         model = Deal
-        fields = ['value', 'stage', 'closing_date', 'status']
+        fields = ['customer', 'value', 'stage', 'closing_date', 'status']
 
         widgets = {
             'closing_date': forms.DateInput(attrs={'type': 'date'}),

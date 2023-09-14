@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="row">
+        <div class="container mt-4">
+            <h2>{{ customer.name }} - Deals</h2>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary">Add Deal</button>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="container mt-4">
+            <h2>Deals</h2>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Customer</th>
+                    <th>Value</th>
+                    <th>Stage</th>
+                    <th>Closing Date</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for deal in deals %}
+                    <tr>
+                        <td>{{ deal.customer }}</td>
+                        <td>{{ deal.value }}</td>
+                        <td>{{ deal.stage }}</td>
+                        <td>{{ deal.closing_date }}</td>
+                        <td>{{ deal.status }}</td>
+                        <td>
+                            <a href="{% url 'crm:edit_deal' deal.id %}" class="btn btn-sm btn-info">Edit</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
