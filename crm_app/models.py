@@ -28,3 +28,22 @@ class Deal(models.Model):
 
     def __str__(self):
         return f"{self.customer.name}'s Deal - ${self.value}"
+
+
+class Task(models.Model):
+    STATUS_CHOICES = [
+        ('Not Started', 'Not Started'),
+        ('In Progress', 'In Progress'),
+        ('Canceled', 'Canceled'),
+        ('Done', 'Done'),
+    ]
+
+    title = models.CharField(max_length=100)
+    description = models.TextField()
+    due_date = models.DateField()
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Not Started')
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, null=True, blank=True)
+    deal = models.ForeignKey(Deal, on_delete=models.CASCADE, null=True, blank=True)
+
+    def __str__(self):
+        return self.title

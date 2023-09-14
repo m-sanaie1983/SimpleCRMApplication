@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import modelformset_factory
 
-from .models import Customer, PhoneNumber, Deal
+from .models import Customer, PhoneNumber, Deal, Task
 
 
 class SignupForm(forms.Form):
@@ -54,4 +54,14 @@ class DealForm(forms.ModelForm):
 
         widgets = {
             'closing_date': forms.DateInput(attrs={'type': 'date'}),
+        }
+
+
+class TaskForm(forms.ModelForm):
+    class Meta:
+        model = Task
+        fields = ['title', 'description', 'due_date', 'status', 'customer', 'deal']
+
+        widgets = {
+            'due_date': forms.DateInput(attrs={'type': 'date'}),
         }

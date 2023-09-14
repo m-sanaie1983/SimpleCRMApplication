@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="row">
+        <div class="container mt-4">
+            <h2>Tasks</h2>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary">Add Task</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="container mt-4">
+            <h2>Tasks</h2>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Customer</th>
+                    <th>Deal</th>
+                    <th>Due Date</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for task in tasks %}
+                    <tr>
+                        <td>{{ task.title }}</td>
+                        <td>{{ task.description }}</td>
+                        <td>{{ task.customer }}</td>
+                        <td>{{ task.deal }}</td>
+                        <td>{{ task.due_date }}</td>
+                        <td>{{ task.status }}</td>
+                        <td>
+                            <a href="{% url 'crm:edit_task' task.id %}" class="btn btn-sm btn-info">Edit</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
